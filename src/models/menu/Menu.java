@@ -4,6 +4,7 @@ import models.history.StepBase;
 import models.history.steps.Step1;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -57,7 +58,7 @@ public class Menu {
     }};
 
     //Choose section menu
-    public void chooseMenuItem(MenuType menuSection) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void chooseMenuItem(MenuType menuSection) throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         if (MenuView == models.menu.MenuView.Continue) {
             switch (menuSection)
             {
@@ -140,7 +141,7 @@ public class Menu {
         }
     }
 
-    private void LoadGame() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private void LoadGame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         String nameFile;
 
         Scanner scanner = new Scanner(System.in);
@@ -173,9 +174,9 @@ public class Menu {
         CreateStep(stepSaved);
     }
 
-    private void CreateStep(String nameForSave) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private void CreateStep(String nameForSave) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Class<?> clazz = Class.forName(nameForSave);
-        StepBase date = (StepBase) clazz.newInstance();
+        StepBase date = (StepBase) clazz.getDeclaredConstructor().newInstance();
         date.startStep();
     }
 }
