@@ -21,11 +21,6 @@ public class Menu {
     //View if menu
     private MenuView MenuView;
 
-    //Change view menu from start to continue and reverse
-    public void changeView() {
-        MenuView = MenuView == models.menu.MenuView.Start ? models.menu.MenuView.Continue : models.menu.MenuView.Start;
-    }
-
     //Write in console sections of menu and start
     public void writeMenuAndStart() {
         if (MenuView == models.menu.MenuView.Start) {
@@ -146,15 +141,14 @@ public class Menu {
     }
 
     private void LoadGame() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        String nameFile = null;
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Write name of file for load:");
-            nameFile = scanner.nextLine();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        String nameFile;
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Write name of file for load:");
+        nameFile = scanner.nextLine();
 
         if (nameFile == null || nameFile == "") {
+            scanner.close();
             LoadGame();
             return;
         }
@@ -162,6 +156,7 @@ public class Menu {
         var path = CreateSavePath(nameFile);
         File f = new File(path);
         if(!f.exists()) {
+            scanner.close();
             System.out.println("File with this name is not exist. Try another filename.");
             LoadGame();
             return;
@@ -172,6 +167,7 @@ public class Menu {
         }
         catch(IOException ex) {
             System.out.println(ex.getMessage());
+            scanner.close();
         }
 
         CreateStep(stepSaved);
